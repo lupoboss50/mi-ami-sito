@@ -7,101 +7,126 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f7f7f7;
-            color: #333;
-        }
-        h1 {
-            color: #ff66b2;
-            font-size: 2.5rem;
-        }
-        button {
-            background-color: #ff66b2;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border-radius: 5px;
-            margin: 10px;
-        }
-        button:hover {
-            background-color: #ff3385;
-        }
-        .hidden {
-            display: none;
-        }
-        #container {
+            background-color: #f1f1f1;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
             height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
         }
-        .img-container img {
-            max-width: 100%;
-            height: auto;
+        h1 {
+            font-size: 36px;
+            color: #333;
         }
-        .img-container {
-            margin-bottom: 20px;
+        .button {
+            background-color: #f6f6f6;
+            color: #333;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .background {
-            background: linear-gradient(45deg, #ff66b2, #ff3385);
-            animation: gradientAnimation 3s infinite alternate;
-            height: 100%;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
+        .button:hover {
+            background-color: #ffcccb;
         }
-        @keyframes gradientAnimation {
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        #heartAnimation {
+            font-size: 48px;
+            display: none;
+            animation: heartAnimation 1s ease-out;
+        }
+        #image {
+            margin-top: 20px;
+            max-width: 200px;
+            max-height: 200px;
+        }
+        @keyframes heartAnimation {
             0% {
-                background: linear-gradient(45deg, #ff66b2, #ff3385);
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(2);
+                opacity: 0.5;
             }
             100% {
-                background: linear-gradient(45deg, #ff3385, #ff66b2);
+                transform: scale(1);
+                opacity: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="background"></div>
-    <div id="container">
-        <h1>Scegli bene o chiudi bene le finestre questa sera</h1>
-        <div class="img-container">
-            <img id="initialImage" src="IMG_1890.jpeg" alt="immagine iniziale">
-        </div>
-        <p id="message">Clicca uno dei pulsanti per scoprire</p>
-        <button onclick="showYes()">Sì</button>
-        <button onclick="showNo()">No</button>
-        <div id="yesSection" class="hidden">
-            <h2>Frase romantica</h2>
-            <p>Sei la persona che mi fa battere il cuore ogni volta che ti vedo.</p>
-        </div>
-        <div id="noSection" class="hidden">
-            <h2>😒</h2>
-            <p>Mi dispiace... torna indietro!</p>
-            <a href="https://youtu.be/QB7ACr7pUuE?si=eZQAf_aS5UiTRNTY" target="_blank">
-                <button>Vai al video!</button>
-            </a>
-        </div>
-    </div>
+
+    <h1>Mi ami?</h1>
+    <button class="button" id="yesButton">Sì</button>
+    <button class="button" id="noButton">No</button>
+
+    <div id="heartAnimation"></div>
+    <img id="image" src="" alt="">
+    <div id="message"></div>
 
     <script>
-        function showYes() {
-            document.getElementById('initialImage').src = "IMG_1890.jpeg"; // Cambia immagine a rosa
-            document.getElementById('message').classList.add("hidden");
-            document.getElementById('yesSection').classList.remove("hidden");
-            document.body.style.backgroundColor = "#f4a6d4"; // Colore vivace per "Sì"
-        }
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const heartAnimation = document.getElementById('heartAnimation');
+        const image = document.getElementById('image');
+        const message = document.getElementById('message');
 
-        function showNo() {
-            document.getElementById('initialImage').src = ""; // Rimuovi immagine
-            document.getElementById('message').classList.add("hidden");
-            document.getElementById('noSection').classList.remove("hidden");
-            document.body.style.backgroundColor = "#2f2f2f"; // Colore cupo per "No"
-        }
+        const positiveMessages = [
+            "Ti amo più di ogni altra cosa.",
+            "Sei la persona che mi fa sorridere ogni giorno.",
+            "Non so come farei senza di te.",
+            "Ogni momento con te è speciale."
+        ];
+
+        const negativeMessages = [
+            "Sei proprio un disastro.",
+            "Magari imparassi a fare qualcosa di utile.",
+            "Sei davvero così speciale? Povero illuso.",
+            "Non ci posso credere che esisti."
+        ];
+
+        let yesCount = 0;
+
+        yesButton.addEventListener('click', () => {
+            yesCount++;
+            heartAnimation.style.display = 'block';
+            heartAnimation.innerHTML = "💖💜❤️";
+            setTimeout(() => heartAnimation.style.display = 'none', 1000);
+
+            if (yesCount >= 3) {
+                message.textContent = "Ottima scelta, passerò da te stasera";
+            } else {
+                const randomPositiveMessage = positiveMessages[Math.floor(Math.random() * positiveMessages.length)];
+                message.textContent = randomPositiveMessage;
+                image.src = "IMG_1890.jpeg"; // Immagine con la rosa
+            }
+        });
+
+        let noCount = 0;
+
+        noButton.addEventListener('click', () => {
+            noCount++;
+            if (noCount >= 3) {
+                window.location.href = "https://youtu.be/xvFZjo5PgG0?si=xk2fcIwiKLtogKPp"; // YouTube link
+            } else {
+                const randomNegativeMessage = negativeMessages[Math.floor(Math.random() * negativeMessages.length)];
+                message.textContent = randomNegativeMessage;
+                image.src = "IMG_1891.jpeg"; // Immagine arrabbiata
+            }
+        });
     </script>
+
 </body>
 </html>
