@@ -1,126 +1,156 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Mi Ami?</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #ff9a9e, #fad0c4);
-      font-family: 'Arial', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
+      background-color: #ffebf0;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      animation: fadeIn 2s ease;
     }
 
     h1 {
       font-size: 3em;
-      color: white;
-      margin-bottom: 20px;
+      margin-top: 50px;
+      color: #e60073;
+      animation: pulse 1.5s infinite alternate;
     }
 
     button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 1.2em;
+      font-size: 1.5em;
+      padding: 10px 30px;
+      margin: 20px;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: all 0.3s ease;
+    }
+
+    #yesBtn {
+      background-color: #ff3399;
+      color: white;
+    }
+
+    #noBtn {
+      background-color: #999;
+      color: white;
     }
 
     button:hover {
       transform: scale(1.1);
     }
 
-    .yes {
-      background-color: #ff6b81;
-      color: white;
+    #response {
+      font-size: 2em;
+      margin-top: 30px;
+      color: #e6005c;
+      animation: popIn 0.5s ease;
     }
 
-    .no {
-      background-color: #333;
-      color: white;
-    }
-
-    .message {
-      margin-top: 20px;
-      font-size: 1.5em;
-      color: white;
-      text-align: center;
-      max-width: 80%;
+    #image {
+      margin-top: 30px;
+      max-width: 300px;
+      border-radius: 15px;
     }
 
     .heart {
       position: absolute;
-      top: -50px;
-      font-size: 2em;
       color: red;
-      animation: fall 3s linear forwards;
+      font-size: 24px;
+      animation: floatUp 2s linear infinite;
+      pointer-events: none;
     }
 
-    @keyframes fall {
-      to {
-        transform: translateY(100vh);
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-200px);
         opacity: 0;
       }
     }
   </style>
 </head>
 <body>
+
   <h1>Mi ami?</h1>
-  <div>
-    <button class="yes" onclick="love()">Sì</button>
-    <button class="no" onclick="hate()">No</button>
-  </div>
-  <div class="message" id="message"></div>
+  <button id="yesBtn">Sì</button>
+  <button id="noBtn">No</button>
+
+  <div id="response"></div>
+  <img id="image" src="" style="display:none;">
 
   <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const responseDiv = document.getElementById("response");
+    const image = document.getElementById("image");
+
     const sweetMessages = [
-      "Ti amo tanto!",
-      "Sei la mia gioia!",
-      "Con te sto benissimo!",
-      "Cuore mio!",
-      "Mi fai felice!"
+      "Lo sapevo che mi amavi!",
+      "Sei il mio tutto.",
+      "Ti amo da impazzire!",
+      "Con te mi sento completo.",
+      "Siamo perfetti insieme."
     ];
 
-    const angryMessages = [
-      "Ma vai via!",
-      "Non ti voglio più vedere!",
-      "Che cattiveria!",
-      "Brutta scelta!",
-      "Addio!"
+    const noMessages = [
+      "Allora vattene! 😒",
+      "Certo che no!",
+      "Dai, non scherziamo.",
+      "No, non mi ami.",
+      "Non è proprio il caso!",
+      "Ma no dai, sei davvero sicuro?",
+      "A questo punto… ciao!",
+      "Non è il momento, scusa.",
+      "Non va così.",
+      "Mi dispiace, ma no."
     ];
 
-    function love() {
+    yesBtn.addEventListener("click", () => {
       const msg = sweetMessages[Math.floor(Math.random() * sweetMessages.length)];
-      document.getElementById('message').innerText = msg;
-      dropHearts();
-    }
+      responseDiv.textContent = msg;
+      image.src = "IMG_1890.jpeg";
+      image.style.display = "block";
+      spawnHearts();
+    });
 
-    function hate() {
-      const msg = angryMessages[Math.floor(Math.random() * angryMessages.length)];
-      document.getElementById('message').innerText = msg;
-      setTimeout(() => {
-        window.location.href = 'https://www.google.com';
-      }, 2000);
-    }
+    noBtn.addEventListener("click", () => {
+      const msg = noMessages[Math.floor(Math.random() * noMessages.length)];
+      responseDiv.textContent = msg;
+      image.src = "IMG_1891.jpeg";
+      image.style.display = "block";
+    });
 
-    function dropHearts() {
-      for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.innerText = '❤️';
+    function spawnHearts() {
+      for (let i = 0; i < 10; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = "100vh";
         document.body.appendChild(heart);
-        setTimeout(() => {
-          heart.remove();
-        }, 3000);
+
+        setTimeout(() => heart.remove(), 2000);
       }
     }
   </script>
