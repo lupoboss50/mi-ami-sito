@@ -1,157 +1,151 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mi Ami?</title>
   <style>
     body {
-      background-color: #FFCCE5; /* Rosa pastello */
-      font-family: 'Arial', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       margin: 0;
-      text-align: center;
-      color: #333;
-    }
-
-    #content {
-      max-width: 500px;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 0;
+      background-color: #f9c7d5;
+      font-family: "Arial", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       margin-bottom: 20px;
+      color: #ff3366;
+      text-align: center;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
     }
 
     button {
-      padding: 10px 20px;
+      padding: 15px 30px;
       font-size: 1.2rem;
-      margin: 10px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: transform 0.2s ease;
+    }
+
+    #yes {
+      background-color: #ff6fa4;
+      color: white;
+    }
+
+    #no {
+      background-color: #333;
+      color: white;
     }
 
     button:hover {
-      background-color: #f1f1f1;
+      transform: scale(1.1);
     }
 
-    .hidden {
-      display: none;
-    }
-
-    .message {
-      font-size: 1.2rem;
+    #output {
+      font-size: 1.5rem;
+      text-align: center;
       margin-top: 20px;
+      color: #660033;
     }
 
-    #emoji {
+    img {
+      margin-top: 20px;
+      width: 200px;
+      max-width: 80%;
+      border-radius: 15px;
+    }
+
+    .emoji {
       position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
       font-size: 2rem;
-      animation: emojiAnimation 1s forwards;
+      animation: fall 2s linear forwards;
+      pointer-events: none;
     }
 
-    @keyframes emojiAnimation {
-      0% {
-        top: 0;
-        opacity: 1;
-      }
-      100% {
-        top: 100%;
-        opacity: 0;
-      }
+    @keyframes fall {
+      0% { transform: translateY(-100px); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div id="content">
-    <h1>Mi ami?</h1>
-    <p class="message">Scegli bene o chiudi bene le finestre questa sera</p>
-    <button id="yesBtn">Sì</button>
-    <button id="noBtn">No</button>
-    <div id="emoji" class="hidden"></div>
-    <img id="image" class="hidden" src="rose.jpg" alt="Rosa">
-    <img id="angryImage" class="hidden" src="angry.jpg" alt="Arrabbiata">
+  <h1>Scegli bene o chiudi bene le finestre questa sera</h1>
+  <div class="buttons">
+    <button id="yes">Sì</button>
+    <button id="no">No</button>
   </div>
+  <div id="output"></div>
+  <img id="image" src="" style="display:none;" />
 
   <script>
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const message = document.querySelector('.message');
-    const emojiContainer = document.getElementById('emoji');
-    const image = document.getElementById('image');
-    const angryImage = document.getElementById('angryImage');
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const output = document.getElementById("output");
+    const image = document.getElementById("image");
 
-    const romanticPhrases = [
-      "Sei la ragione per cui sorrido ogni giorno.",
-      "Con te, il mondo sembra più bello.",
-      "Ogni momento con te è un sogno che diventa realtà.",
-      "Non riesco a smettere di pensare a te.",
+    const yesPhrases = [
+      "Ti amo come un lupo ama la luna.",
+      "Con te posso essere davvero me stesso.",
+      "Sei la parte migliore delle mie giornate.",
+      "Quando sorridi, il mio mondo si illumina.",
+      "Ottima scelta, passerò da te stasera!"
     ];
 
-    const insultPhrases = [
-      "Pensi davvero di essere così speciale?",
-      "Ma che stai dicendo?",
-      "Sei sicuro di quello che dici?",
-      "Dai, non essere ridicolo.",
+    const noPhrases = [
+      "Ma come osi?",
+      "Ripensaci prima che sia troppo tardi.",
+      "Delusa è dir poco.",
+      "E io che ti avevo anche portato i fiori..."
     ];
 
-    let yesClickCount = 0;
+    let noCount = 0;
+    let yesCount = 0;
 
-    yesBtn.addEventListener('click', () => {
-      yesClickCount++;
-      showRomanticPhrase();
-      showEmojiAnimation();
-      if (yesClickCount >= 3) {
-        message.textContent = "Ottima scelta, passerò da te stasera!";
+    function dropEmojis() {
+      const emojis = ["💖", "💜", "❤️", "💘", "💕", "💞"];
+      for (let i = 0; i < 60; i++) {
+        const emoji = document.createElement("div");
+        emoji.classList.add("emoji");
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(emoji);
+        setTimeout(() => emoji.remove(), 2000);
       }
+    }
+
+    yesBtn.addEventListener("click", () => {
+      yesCount++;
+      dropEmojis();
+      image.src = "IMG_1890.jpeg"; 
+      image.style.display = "block";
+      const phrase = yesCount >= 3 ? yesPhrases[4] : yesPhrases[Math.floor(Math.random() * 4)];
+      output.textContent = phrase;
     });
 
-    noBtn.addEventListener('click', () => {
-      showAngryImage();
-      showInsultPhrase();
-      if (yesClickCount >= 3) {
-        window.location.href = "https://youtu.be/xvFZjo5PgG0?si=xk2fcIwiKLtogKPp";
+    noBtn.addEventListener("click", () => {
+      noCount++;
+      image.src = "IMG_1891.jpeg"; 
+      image.style.display = "block";
+      output.textContent = noPhrases[Math.floor(Math.random() * noPhrases.length)];
+      if (noCount >= 3) {
+        setTimeout(() => {
+          window.location.href = "https://youtu.be/xvFZjo5PgG0?si=xk2fcIwiKLtogKPp";
+        }, 2000);
       }
     });
-
-    function showRomanticPhrase() {
-      const randomPhrase = romanticPhrases[Math.floor(Math.random() * romanticPhrases.length)];
-      message.textContent = randomPhrase;
-      image.classList.remove('hidden');
-      angryImage.classList.add('hidden');
-    }
-
-    function showInsultPhrase() {
-      const randomInsult = insultPhrases[Math.floor(Math.random() * insultPhrases.length)];
-      message.textContent = randomInsult;
-      angryImage.classList.remove('hidden');
-      image.classList.add('hidden');
-    }
-
-    function showEmojiAnimation() {
-      emojiContainer.textContent = '💖💜❤️💖💜❤️'; // Puoi aggiungere altre emoji se vuoi
-      emojiContainer.classList.remove('hidden');
-      setTimeout(() => {
-        emojiContainer.classList.add('hidden');
-      }, 1000); // Le emoji scompaiono dopo 1 secondo
-    }
-
-    function showAngryImage() {
-      angryImage.classList.remove('hidden');
-      image.classList.add('hidden');
-    }
   </script>
 </body>
-</html>   
+</html>
