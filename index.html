@@ -1,69 +1,128 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mi Ami?</title>
   <style>
     body {
-      background-color: #1e1e2f;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 100px;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
     }
+
     h1 {
       font-size: 3em;
+      color: white;
+      margin-bottom: 20px;
     }
+
     button {
-      font-size: 1.5em;
-      margin: 20px;
-      padding: 10px 30px;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1.2em;
       border: none;
-      border-radius: 10px;
+      border-radius: 5px;
       cursor: pointer;
+      transition: transform 0.2s;
     }
-    #yes {
-      background-color: #ff69b4;
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    .yes {
+      background-color: #ff6b81;
       color: white;
     }
-    #no {
-      background-color: #444;
+
+    .no {
+      background-color: #333;
       color: white;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1.5em;
+      color: white;
+      text-align: center;
+      max-width: 80%;
+    }
+
+    .heart {
+      position: absolute;
+      top: -50px;
+      font-size: 2em;
+      color: red;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Mi ami?</h1>
-  <button id="yes">Sì</button>
-  <button id="no">No</button>
+  <div>
+    <button class="yes" onclick="love()">Sì</button>
+    <button class="no" onclick="hate()">No</button>
+  </div>
+  <div class="message" id="message"></div>
 
   <script>
-    const frasiDolci = [
-      "Ti amo più della Nutella.",
-      "Sei la mia felicità pura.",
-      "Con te, ogni giorno è perfetto.",
-      "Sei la mia persona preferita.",
-      "Il mio cuore batte solo per te."
+    const sweetMessages = [
+      "Ti amo tanto!",
+      "Sei la mia gioia!",
+      "Con te sto benissimo!",
+      "Cuore mio!",
+      "Mi fai felice!"
     ];
 
-    const insulti = [
-      "Allora vattene, serpe!",
-      "Ma chi ti vuole!",
-      "Hai perso un diamante, bro.",
-      "Clicca 'No' e sparisci, traditrice.",
-      "Meglio solo che con te!"
+    const angryMessages = [
+      "Ma vai via!",
+      "Non ti voglio più vedere!",
+      "Che cattiveria!",
+      "Brutta scelta!",
+      "Addio!"
     ];
 
-    document.getElementById("yes").onclick = function() {
-      const frase = frasiDolci[Math.floor(Math.random() * frasiDolci.length)];
-      alert(frase);
-    };
+    function love() {
+      const msg = sweetMessages[Math.floor(Math.random() * sweetMessages.length)];
+      document.getElementById('message').innerText = msg;
+      dropHearts();
+    }
 
-    document.getElementById("no").onclick = function() {
-      const insulto = insulti[Math.floor(Math.random() * insulti.length)];
-      alert(insulto);
-      window.close();
-    };
+    function hate() {
+      const msg = angryMessages[Math.floor(Math.random() * angryMessages.length)];
+      document.getElementById('message').innerText = msg;
+      setTimeout(() => {
+        window.location.href = 'https://www.google.com';
+      }, 2000);
+    }
+
+    function dropHearts() {
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.innerText = '❤️';
+        document.body.appendChild(heart);
+        setTimeout(() => {
+          heart.remove();
+        }, 3000);
+      }
+    }
   </script>
 </body>
 </html>
