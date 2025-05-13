@@ -6,93 +6,102 @@
     <title>Mi Ami?</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        h1 {
+            color: #ff66b2;
+            font-size: 2.5rem;
+        }
+        button {
+            background-color: #ff66b2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #ff3385;
+        }
+        .hidden {
+            display: none;
+        }
+        #container {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: background-color 0.5s, color 0.5s;
-            background: linear-gradient(45deg, #ff66b2, #ff3399, #ff99cc);
-            background-size: 400% 400%;
-            animation: gradientAnimation 5s ease infinite;
+            flex-direction: column;
+            height: 100vh;
         }
-
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        h1 {
-            font-size: 3em;
-            color: #fff;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        button {
-            font-size: 1.5em;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 25px;
-            border: 2px solid #fff;
-            background-color: rgba(255, 255, 255, 0.7);
-            color: #333;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        button:hover {
-            background-color: #ff3399;
-            color: #fff;
-            transform: scale(1.1);
-        }
-
-        h2 {
-            font-size: 2em;
-            color: #fff;
-            margin-top: 10px;
-        }
-
-        img {
-            width: 300px;
+        .img-container img {
+            max-width: 100%;
             height: auto;
-            margin: 20px;
-            transition: transform 0.5s ease;
         }
-
-        img:hover {
-            transform: scale(1.1);
+        .img-container {
+            margin-bottom: 20px;
+        }
+        .background {
+            background: linear-gradient(45deg, #ff66b2, #ff3385);
+            animation: gradientAnimation 3s infinite alternate;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        @keyframes gradientAnimation {
+            0% {
+                background: linear-gradient(45deg, #ff66b2, #ff3385);
+            }
+            100% {
+                background: linear-gradient(45deg, #ff3385, #ff66b2);
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Mi Ami?</h1>
-    <button id="yesBtn">Sì</button>
-    <button id="noBtn">No</button>
-    <h2 id="message">Clicca su uno dei pulsanti per scoprire!</h2>
-    <img id="image" src="IMG_1890.jpeg" alt="Immagine di felicità">
-    
-    <script>
-        document.getElementById('yesBtn').addEventListener('click', function() {
-            document.body.style.backgroundColor = "#FF66B2"; // Colori vivaci per il "Sì"
-            document.getElementById('message').innerText = "Mi piaci tanto! 💖"; // Aggiungi la frase quando si clicca Sì
-            document.getElementById('image').src = "IMG_1891.jpeg"; // Cambia immagine per "Sì"
-        });
+    <div class="background"></div>
+    <div id="container">
+        <h1>Scegli bene o chiudi bene le finestre questa sera</h1>
+        <div class="img-container">
+            <img id="initialImage" src="IMG_1890.jpeg" alt="immagine iniziale">
+        </div>
+        <p id="message">Clicca uno dei pulsanti per scoprire</p>
+        <button onclick="showYes()">Sì</button>
+        <button onclick="showNo()">No</button>
+        <div id="yesSection" class="hidden">
+            <h2>Frase romantica</h2>
+            <p>Sei la persona che mi fa battere il cuore ogni volta che ti vedo.</p>
+        </div>
+        <div id="noSection" class="hidden">
+            <h2>😒</h2>
+            <p>Mi dispiace... torna indietro!</p>
+            <a href="https://youtu.be/QB7ACr7pUuE?si=eZQAf_aS5UiTRNTY" target="_blank">
+                <button>Vai al video!</button>
+            </a>
+        </div>
+    </div>
 
-        document.getElementById('noBtn').addEventListener('click', function() {
-            document.body.style.backgroundColor = "#2F4F4F"; // Colori cupi per il "No"
-            document.getElementById('message').innerText = "Ok, va bene...😒"; // Aggiungi la frase per "No"
-            document.getElementById('image').src = "IMG_1891.jpeg"; // Cambia immagine per "No"
-            setTimeout(function(){
-                window.location.href = "https://youtu.be/QB7ACr7pUuE?si=eZQAf_aS5UiTRNTY"; // Video se clicchi No
-            }, 1000); // Redirige dopo 1 secondo per il tempo di visualizzare l'immagine
-        });
+    <script>
+        function showYes() {
+            document.getElementById('initialImage').src = "IMG_1890.jpeg"; // Cambia immagine a rosa
+            document.getElementById('message').classList.add("hidden");
+            document.getElementById('yesSection').classList.remove("hidden");
+            document.body.style.backgroundColor = "#f4a6d4"; // Colore vivace per "Sì"
+        }
+
+        function showNo() {
+            document.getElementById('initialImage').src = ""; // Rimuovi immagine
+            document.getElementById('message').classList.add("hidden");
+            document.getElementById('noSection').classList.remove("hidden");
+            document.body.style.backgroundColor = "#2f2f2f"; // Colore cupo per "No"
+        }
     </script>
 </body>
 </html>
