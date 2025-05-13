@@ -1,158 +1,98 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Mi Ami?</title>
-  <style>
-    body {
-      background-color: #ffebf0;
-      text-align: center;
-      font-family: Arial, sans-serif;
-      animation: fadeIn 2s ease;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Ami?</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.5s, color 0.5s;
+            background: linear-gradient(45deg, #ff66b2, #ff3399, #ff99cc);
+            background-size: 400% 400%;
+            animation: gradientAnimation 5s ease infinite;
+        }
 
-    h1 {
-      font-size: 3em;
-      margin-top: 50px;
-      color: #e60073;
-      animation: pulse 1.5s infinite alternate;
-    }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-    button {
-      font-size: 1.5em;
-      padding: 10px 30px;
-      margin: 20px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+        h1 {
+            font-size: 3em;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-    #yesBtn {
-      background-color: #ff3399;
-      color: white;
-    }
+        button {
+            font-size: 1.5em;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 25px;
+            border: 2px solid #fff;
+            background-color: rgba(255, 255, 255, 0.7);
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
 
-    #noBtn {
-      background-color: #999;
-      color: white;
-    }
+        button:hover {
+            background-color: #ff3399;
+            color: #fff;
+            transform: scale(1.1);
+        }
 
-    button:hover {
-      transform: scale(1.1);
-    }
+        h2 {
+            font-size: 2em;
+            color: #fff;
+            margin-top: 10px;
+        }
 
-    #response {
-      font-size: 2em;
-      margin-top: 30px;
-      color: #e6005c;
-      animation: popIn 0.5s ease;
-    }
+        img {
+            width: 300px;
+            height: auto;
+            margin: 20px;
+            transition: transform 0.5s ease;
+        }
 
-    #image {
-      margin-top: 30px;
-      max-width: 300px;
-      border-radius: 15px;
-    }
-
-    .heart {
-      position: absolute;
-      color: red;
-      font-size: 24px;
-      animation: floatUp 2s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes pulse {
-      from { transform: scale(1); }
-      to { transform: scale(1.1); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes popIn {
-      from { transform: scale(0.5); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-200px);
-        opacity: 0;
-      }
-    }
-  </style>
+        img:hover {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
+    <h1>Mi Ami?</h1>
+    <button id="yesBtn">Sì</button>
+    <button id="noBtn">No</button>
+    <h2 id="message">Clicca su uno dei pulsanti per scoprire!</h2>
+    <img id="image" src="IMG_1890.jpeg" alt="Immagine di felicità">
+    
+    <script>
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            document.body.style.backgroundColor = "#FF66B2"; // Colori vivaci per il "Sì"
+            document.getElementById('message').innerText = "Mi piaci tanto! 💖"; // Aggiungi la frase quando si clicca Sì
+            document.getElementById('image').src = "IMG_1891.jpeg"; // Cambia immagine per "Sì"
+        });
 
-  <h1>Mi ami?</h1>
-  <button id="yesBtn">Sì</button>
-  <button id="noBtn">No</button>
-
-  <div id="response"></div>
-  <img id="image" src="" style="display:none;">
-
-  <script>
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const responseDiv = document.getElementById("response");
-    const image = document.getElementById("image");
-
-    const sweetMessages = [
-      "Lo sapevo che mi amavi!",
-      "Sei il mio tutto.",
-      "Ti amo da impazzire!",
-      "Con te mi sento completo.",
-      "Siamo perfetti insieme."
-    ];
-
-    const noMessages = [
-      "Allora vattene! 😒",
-      "Certo che no!",
-      "Dai, non scherziamo.",
-      "No, non mi ami.",
-      "Non è proprio il caso!",
-      "Ma no dai, sei davvero sicuro?",
-      "A questo punto… ciao!",
-      "Non è il momento, scusa.",
-      "Non va così.",
-      "Mi dispiace, ma no."
-    ];
-
-    yesBtn.addEventListener("click", () => {
-      const msg = sweetMessages[Math.floor(Math.random() * sweetMessages.length)];
-      responseDiv.textContent = msg;
-      image.src = "IMG_1890.jpeg";
-      image.style.display = "block";
-      spawnHearts();
-    });
-
-    noBtn.addEventListener("click", () => {
-      const msg = noMessages[Math.floor(Math.random() * noMessages.length)];
-      responseDiv.textContent = msg;
-      image.src = "IMG_1891.jpeg";
-      image.style.display = "block";
-    });
-
-    function spawnHearts() {
-      for (let i = 0; i < 10; i++) {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.textContent = "❤️";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.top = "100vh";
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 2000);
-      }
-    }
-  </script>
+        document.getElementById('noBtn').addEventListener('click', function() {
+            document.body.style.backgroundColor = "#2F4F4F"; // Colori cupi per il "No"
+            document.getElementById('message').innerText = "Ok, va bene...😒"; // Aggiungi la frase per "No"
+            document.getElementById('image').src = "IMG_1891.jpeg"; // Cambia immagine per "No"
+            setTimeout(function(){
+                window.location.href = "https://youtu.be/QB7ACr7pUuE?si=eZQAf_aS5UiTRNTY"; // Video se clicchi No
+            }, 1000); // Redirige dopo 1 secondo per il tempo di visualizzare l'immagine
+        });
+    </script>
 </body>
 </html>
