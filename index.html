@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Ami?</title>
+  <style>
+    body {
+      background-color: #1e1e2f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+    h1 {
+      font-size: 3em;
+    }
+    button {
+      font-size: 1.5em;
+      margin: 20px;
+      padding: 10px 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    #yes {
+      background-color: #ff69b4;
+      color: white;
+    }
+    #no {
+      background-color: #444;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mi ami?</h1>
+  <button id="yes">Sì</button>
+  <button id="no">No</button>
+
+  <script>
+    const frasiDolci = [
+      "Ti amo più della Nutella.",
+      "Sei la mia felicità pura.",
+      "Con te, ogni giorno è perfetto.",
+      "Sei la mia persona preferita.",
+      "Il mio cuore batte solo per te."
+    ];
+
+    const insulti = [
+      "Allora vattene, serpe!",
+      "Ma chi ti vuole!",
+      "Hai perso un diamante, bro.",
+      "Clicca 'No' e sparisci, traditrice.",
+      "Meglio solo che con te!"
+    ];
+
+    document.getElementById("yes").onclick = function() {
+      const frase = frasiDolci[Math.floor(Math.random() * frasiDolci.length)];
+      alert(frase);
+    };
+
+    document.getElementById("no").onclick = function() {
+      const insulto = insulti[Math.floor(Math.random() * insulti.length)];
+      alert(insulto);
+      window.close();
+    };
+  </script>
+</body>
+</html>
