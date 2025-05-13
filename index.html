@@ -1,132 +1,157 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Ami?</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 36px;
-            color: #333;
-        }
-        .button {
-            background-color: #f6f6f6;
-            color: #333;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 25px;
-            margin: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .button:hover {
-            background-color: #ffcccb;
-        }
-        #message {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #333;
-        }
-        #heartAnimation {
-            font-size: 48px;
-            display: none;
-            animation: heartAnimation 1s ease-out;
-        }
-        #image {
-            margin-top: 20px;
-            max-width: 200px;
-            max-height: 200px;
-        }
-        @keyframes heartAnimation {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(2);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Ami?</title>
+  <style>
+    body {
+      background-color: #FFCCE5; /* Rosa pastello */
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      color: #333;
+    }
+
+    #content {
+      max-width: 500px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #f1f1f1;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .message {
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
+
+    #emoji {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      animation: emojiAnimation 1s forwards;
+    }
+
+    @keyframes emojiAnimation {
+      0% {
+        top: 0;
+        opacity: 1;
+      }
+      100% {
+        top: 100%;
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-
+  <div id="content">
     <h1>Mi ami?</h1>
-    <button class="button" id="yesButton">Sì</button>
-    <button class="button" id="noButton">No</button>
+    <p class="message">Scegli bene o chiudi bene le finestre questa sera</p>
+    <button id="yesBtn">Sì</button>
+    <button id="noBtn">No</button>
+    <div id="emoji" class="hidden"></div>
+    <img id="image" class="hidden" src="rose.jpg" alt="Rosa">
+    <img id="angryImage" class="hidden" src="angry.jpg" alt="Arrabbiata">
+  </div>
 
-    <div id="heartAnimation"></div>
-    <img id="image" src="" alt="">
-    <div id="message"></div>
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const message = document.querySelector('.message');
+    const emojiContainer = document.getElementById('emoji');
+    const image = document.getElementById('image');
+    const angryImage = document.getElementById('angryImage');
 
-    <script>
-        const yesButton = document.getElementById('yesButton');
-        const noButton = document.getElementById('noButton');
-        const heartAnimation = document.getElementById('heartAnimation');
-        const image = document.getElementById('image');
-        const message = document.getElementById('message');
+    const romanticPhrases = [
+      "Sei la ragione per cui sorrido ogni giorno.",
+      "Con te, il mondo sembra più bello.",
+      "Ogni momento con te è un sogno che diventa realtà.",
+      "Non riesco a smettere di pensare a te.",
+    ];
 
-        const positiveMessages = [
-            "Ti amo più di ogni altra cosa.",
-            "Sei la persona che mi fa sorridere ogni giorno.",
-            "Non so come farei senza di te.",
-            "Ogni momento con te è speciale."
-        ];
+    const insultPhrases = [
+      "Pensi davvero di essere così speciale?",
+      "Ma che stai dicendo?",
+      "Sei sicuro di quello che dici?",
+      "Dai, non essere ridicolo.",
+    ];
 
-        const negativeMessages = [
-            "Sei proprio un disastro.",
-            "Magari imparassi a fare qualcosa di utile.",
-            "Sei davvero così speciale? Povero illuso.",
-            "Non ci posso credere che esisti."
-        ];
+    let yesClickCount = 0;
 
-        let yesCount = 0;
+    yesBtn.addEventListener('click', () => {
+      yesClickCount++;
+      showRomanticPhrase();
+      showEmojiAnimation();
+      if (yesClickCount >= 3) {
+        message.textContent = "Ottima scelta, passerò da te stasera!";
+      }
+    });
 
-        yesButton.addEventListener('click', () => {
-            yesCount++;
-            heartAnimation.style.display = 'block';
-            heartAnimation.innerHTML = "💖💜❤️";
-            setTimeout(() => heartAnimation.style.display = 'none', 1000);
+    noBtn.addEventListener('click', () => {
+      showAngryImage();
+      showInsultPhrase();
+      if (yesClickCount >= 3) {
+        window.location.href = "https://youtu.be/xvFZjo5PgG0?si=xk2fcIwiKLtogKPp";
+      }
+    });
 
-            if (yesCount >= 3) {
-                message.textContent = "Ottima scelta, passerò da te stasera";
-            } else {
-                const randomPositiveMessage = positiveMessages[Math.floor(Math.random() * positiveMessages.length)];
-                message.textContent = randomPositiveMessage;
-                image.src = "IMG_1890.jpeg"; // Immagine con la rosa
-            }
-        });
+    function showRomanticPhrase() {
+      const randomPhrase = romanticPhrases[Math.floor(Math.random() * romanticPhrases.length)];
+      message.textContent = randomPhrase;
+      image.classList.remove('hidden');
+      angryImage.classList.add('hidden');
+    }
 
-        let noCount = 0;
+    function showInsultPhrase() {
+      const randomInsult = insultPhrases[Math.floor(Math.random() * insultPhrases.length)];
+      message.textContent = randomInsult;
+      angryImage.classList.remove('hidden');
+      image.classList.add('hidden');
+    }
 
-        noButton.addEventListener('click', () => {
-            noCount++;
-            if (noCount >= 3) {
-                window.location.href = "https://youtu.be/xvFZjo5PgG0?si=xk2fcIwiKLtogKPp"; // YouTube link
-            } else {
-                const randomNegativeMessage = negativeMessages[Math.floor(Math.random() * negativeMessages.length)];
-                message.textContent = randomNegativeMessage;
-                image.src = "IMG_1891.jpeg"; // Immagine arrabbiata
-            }
-        });
-    </script>
+    function showEmojiAnimation() {
+      emojiContainer.textContent = '💖💜❤️💖💜❤️'; // Puoi aggiungere altre emoji se vuoi
+      emojiContainer.classList.remove('hidden');
+      setTimeout(() => {
+        emojiContainer.classList.add('hidden');
+      }, 1000); // Le emoji scompaiono dopo 1 secondo
+    }
 
+    function showAngryImage() {
+      angryImage.classList.remove('hidden');
+      image.classList.add('hidden');
+    }
+  </script>
 </body>
 </html>
